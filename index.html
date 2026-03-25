@@ -383,11 +383,11 @@
     <h2 class="section-title">Parla con un nostro consulente</h2>
     <p class="section-sub">Prima consulenza gratuita e senza impegno. Descrivici la situazione e ti risponderemo entro 24 ore lavorative.</p>
     <form class="cta-form" action="https://formspree.io/f/xgopeklz" method="POST">
-      <input type="text" placeholder="Nome e cognome *" required>
-      <input type="text" placeholder="Azienda / Studio *">
-      <input type="email" placeholder="Email *" required>
-      <input type="tel" placeholder="Telefono">
-      <select class="full">
+     <input type="text" name="nome" placeholder="Nome e cognome *" required>
+     <input type="text" name="azienda" placeholder="Azienda / Studio *">
+     <input type="email" name="email" placeholder="Email *" required>
+     <input type="tel" name="telefono" placeholder="Telefono">
+      <select name="servizio" class="full">
         <option value="" disabled selected>Tipo di servizio richiesto</option>
         <option>Recupero stragiudiziale</option>
         <option>Recupero giudiziale</option>
@@ -395,10 +395,11 @@
         <option>Consulenza debitoria</option>
         <option>Non so ancora, vorrei un'analisi</option>
       </select>
-      <textarea class="full" placeholder="Descrivi brevemente la situazione (importo indicativo, anzianità del credito, eventuali tentativi già effettuati)..."></textarea>
+      <textarea name="messaggio" class="full" placeholder="Descrivi brevemente la situazione..."></textarea>
       <div class="full" style="display:flex; align-items:flex-start; gap:10px;">
         <input type="checkbox" id="privacy" style="margin-top:3px; width:auto; flex-shrink:0;">
-        <label for="privacy" class="privacy-note">Ho letto e accetto la <a href="#" style="color:var(--gold-light);">Privacy Policy</a>. I dati forniti saranno trattati in conformità al GDPR per la gestione della richiesta di contatto.</label>
+       <input type="checkbox" name="privacy" required> 
+       <label for="privacy" class="privacy-note">Ho letto e accetto la <a href="#" style="color:var(--gold-light);">Privacy Policy</a>. I dati forniti saranno trattati in conformità al GDPR per la gestione della richiesta di contatto.</label>
       </div>
       <div class="full">
         <button class="btn-primary" style="width:100%; padding:15px; font-size:15px;">Invia la richiesta di consulenza gratuita</button>
