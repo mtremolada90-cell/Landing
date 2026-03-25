@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #1A2E42;
+    --gold: #B8952A;
+    --gold-light: #D4AD45;
+    --gold-pale: #F5EDD5;
+    --cream: #FAF8F3;
+    --gray-text: #4A5568;
+    --gray-light: #E8E4DA;
+    --white: #FFFFFF;
+    --danger-soft: #FDF2F2;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --max: 1100px;
+  }
+
+  body { font-family: var(--sans); background: var(--white); color: var(--navy); line-height: 1.7; font-size: 16px; }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    padding: 18px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--white); letter-spacing: 0.01em; }
+  .logo span { color: var(--gold-light); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; letter-spacing: 0.03em; }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta { background: var(--gold); color: var(--navy) !important; font-weight: 500 !important; padding: 8px 20px; border-radius: 4px; }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 100px 40px 90px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 110%, rgba(184,149,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-kicker {
+    display: inline-block;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold-light); border: 1px solid rgba(184,149,42,0.4);
+    padding: 5px 16px; border-radius: 2px; margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(36px, 5vw, 58px); font-weight: 700;
+    color: var(--white); line-height: 1.18; max-width: 780px; margin: 0 auto 24px;
+  }
+  .hero h1 em { color: var(--gold-light); font-style: normal; }
+  .hero-sub {
+    color: rgba(255,255,255,0.65); font-size: 18px; font-weight: 300; max-width: 560px;
+    margin: 0 auto 44px; line-height: 1.7;
+  }
+  .hero-cta-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy); font-weight: 500; font-size: 15px;
+    padding: 14px 32px; border-radius: 4px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block; letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--white); font-weight: 400; font-size: 15px;
+    padding: 13px 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer; text-decoration: none; display: inline-block;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.05); }
+
+  /* TRUST BAR */
+  .trust-bar {
+    background: var(--gold-pale); border-top: 1px solid var(--gray-light);
+    padding: 22px 40px;
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+  .trust-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: var(--navy-mid); }
+  .trust-icon { font-size: 16px; }
+
+  /* SECTION BASE */
+  section { padding: 80px 40px; max-width: var(--max); margin: 0 auto; }
+  .section-kicker { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .section-title { font-family: var(--serif); font-size: clamp(28px, 3.5vw, 42px); font-weight: 600; color: var(--navy); line-height: 1.22; }
+  .section-sub { font-size: 17px; color: var(--gray-text); font-weight: 300; line-height: 1.7; max-width: 520px; margin-top: 14px; }
+
+  /* INTRO */
+  .intro-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .intro-text .section-sub { max-width: 100%; }
+  .intro-card {
+    background: var(--navy); border-radius: 6px; padding: 40px;
+    color: var(--white); position: relative;
+  }
+  .intro-card::before { content: '"'; font-family: var(--serif); font-size: 120px; color: var(--gold); opacity: 0.2; position: absolute; top: -10px; left: 28px; line-height: 1; }
+  .intro-card blockquote { font-family: var(--serif); font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.9); position: relative; z-index: 1; }
+  .intro-card cite { display: block; margin-top: 18px; font-size: 13px; color: var(--gold-light); font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* SERVICES */
+  .services-outer { background: var(--cream); }
+  .services-outer section { max-width: var(--max); }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; flex-wrap: wrap; gap: 20px; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .service-card {
+    background: var(--white); border: 1px solid var(--gray-light); border-radius: 6px;
+    padding: 32px 28px; transition: border-color 0.2s, transform 0.2s; cursor: pointer;
+  }
+  .service-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .service-num { font-family: var(--serif); font-size: 13px; color: var(--gold); font-weight: 600; margin-bottom: 16px; letter-spacing: 0.12em; }
+  .service-card h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 10px; line-height: 1.3; }
+  .service-card p { font-size: 14px; color: var(--gray-text); line-height: 1.65; }
+  .service-tag { display: inline-block; margin-top: 18px; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+
+  /* METODO */
+  .metodo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px 80px; margin-top: 52px; }
+  .metodo-step { display: flex; gap: 20px; }
+  .step-num { font-family: var(--serif); font-size: 42px; font-weight: 700; color: var(--gold-pale); line-height: 1; min-width: 48px; }
+  .step-body h3 { font-family: var(--serif); font-size: 19px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .step-body p { font-size: 14px; color: var(--gray-text); line-height: 1.65; }
+
+  /* PERCHÉ */
+  .perche-outer { background: var(--navy); color: var(--white); }
+  .perche-outer section { max-width: var(--max); }
+  .perche-outer .section-title { color: var(--white); }
+  .perche-outer .section-sub { color: rgba(255,255,255,0.6); }
+  .perche-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2px; margin-top: 52px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
+  .perche-item { padding: 36px 28px; border-right: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
+  .perche-item:last-child { border-right: none; }
+  .perche-item h3 { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--gold-light); margin-bottom: 8px; }
+  .perche-item p { font-size: 13px; color: rgba(255,255,255,0.58); line-height: 1.65; }
+
+  /* DEONTOLOGIA */
+  .deontologia-box {
+    background: var(--gold-pale); border: 1px solid rgba(184,149,42,0.3);
+    border-radius: 6px; padding: 48px 52px;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center;
+  }
+  .deontologia-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+  .deontologia-title span { color: var(--gold); }
+  .deontologia-list { list-style: none; }
+  .deontologia-list li { font-size: 15px; color: var(--gray-text); padding: 10px 0; border-bottom: 1px solid rgba(184,149,42,0.15); display: flex; align-items: flex-start; gap: 12px; }
+  .deontologia-list li:last-child { border-bottom: none; }
+  .check { color: var(--gold); font-weight: 600; margin-top: 1px; flex-shrink: 0; }
+
+  /* CTA FINALE */
+  .cta-outer { background: var(--navy); }
+  .cta-outer section { max-width: 760px; text-align: center; }
+  .cta-outer .section-title { color: var(--white); margin: 10px auto 0; }
+  .cta-outer .section-sub { color: rgba(255,255,255,0.6); margin: 16px auto 36px; max-width: 100%; }
+  .cta-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: left; }
+  .cta-form input, .cta-form textarea, .cta-form select {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px; padding: 12px 16px; color: var(--white); font-size: 14px;
+    font-family: var(--sans); width: 100%; outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-form input::placeholder, .cta-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .cta-form input:focus, .cta-form textarea:focus, .cta-form select:focus { border-color: var(--gold); }
+  .cta-form .full { grid-column: 1 / -1; }
+  .cta-form textarea { height: 100px; resize: vertical; }
+  .cta-form select { color: rgba(255,255,255,0.6); }
+  .cta-form select option { background: var(--navy-mid); color: var(--white); }
+  .privacy-note { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 12px; }
+
+  /* FOOTER */
+  footer {
+    background: #08111A; padding: 40px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
+  .footer-links a:hover { color: var(--gold-light); }
+
+  @media (max-width: 720px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 20px; }
+    .hero { padding: 72px 20px 64px; }
+    .intro-wrap, .metodo-grid, .deontologia-box { grid-template-columns: 1fr; gap: 32px; }
+    .trust-bar { gap: 18px; padding: 18px 20px; }
+    .perche-grid { grid-template-columns: 1fr 1fr; }
+    .cta-form { grid-template-columns: 1fr; }
+    .cta-form .full { grid-column: 1; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Recupero Crediti <span>Italia</span></div>
+  <ul class="nav-links">
+    <li><a href="#servizi">Servizi</a></li>
+    <li><a href="#metodo">Il Metodo</a></li>
+    <li><a href="#deontologia">Etica e Deontologia</a></li>
+    <li><a href="#contatti" class="nav-cta">Consulenza Gratuita</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-kicker">Recupero Crediti · Operatività su tutto il territorio nazionale</div>
+  <h1>Recuperiamo i tuoi crediti con <em>efficacia</em> e <em>rispetto</em> delle regole</h1>
+  <p class="hero-sub">Assistiamo aziende, PMI e professionisti nel recupero dei crediti insoluti, attraverso soluzioni stragiudiziali e giudiziali conformi alle normative vigenti.</p>
+  <div class="hero-cta-row">
+    <a href="#contatti" class="btn-primary">Richiedi una consulenza gratuita</a>
+    <a href="#servizi" class="btn-outline">Scopri i servizi</a>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="trust-icon">🇮🇹</span> Attività su tutta Italia</div>
+  <div class="trust-item"><span class="trust-icon">⚖️</span> Conformità normativa garantita</div>
+  <div class="trust-item"><span class="trust-icon">🤝</span> Approccio deontologicamente corretto</div>
+  <div class="trust-item"><span class="trust-icon">📋</span> Prima consulenza sempre gratuita</div>
+</div>
+
+<!-- INTRO -->
+<section id="chi-siamo">
+  <div class="intro-wrap">
+    <div class="intro-text">
+      <div class="section-kicker">Chi siamo</div>
+      <h2 class="section-title">Un partner affidabile per la gestione del credito</h2>
+      <p class="section-sub" style="margin-top:16px;">
+        Recupero Crediti Italia è uno studio specializzato nella gestione e nel recupero dei crediti commerciali, con operatività su tutto il territorio nazionale. Affianchiamo imprese, studi professionali e operatori finanziari con soluzioni su misura, sempre nel rispetto del quadro normativo e dei principi deontologici che regolano il settore.
+      </p>
+      <p class="section-sub" style="margin-top:14px; font-size:15px;">
+        Crediamo che efficacia e correttezza non siano in contraddizione: recuperare un credito è legittimo e necessario, ma deve avvenire con trasparenza, proporzionalità e pieno rispetto della dignità di tutte le parti coinvolte.
+      </p>
+    </div>
+    <div class="intro-card">
+      <blockquote>Il recupero del credito non è pressione: è il ripristino di un equilibrio contrattuale, tutelato dalla legge e dalla corretta prassi professionale.</blockquote>
+      <cite>— Il nostro principio guida</cite>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIZI -->
+<div class="services-outer" id="servizi">
+  <section>
+    <div class="services-header">
+      <div>
+        <div class="section-kicker">Servizi</div>
+        <h2 class="section-title">Cosa facciamo per te</h2>
+      </div>
+      <p style="font-size:15px; color:var(--gray-text); max-width:320px; font-weight:300; line-height:1.6;">Ogni situazione è diversa. Per questo offriamo un'analisi preliminare gratuita per individuare la strategia più efficace.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <h3>Recupero Stragiudiziale</h3>
+        <p>Attività di sollecito professionale e mediazione che puntano alla risoluzione bonaria della posizione debitoria, riducendo tempi e costi per entrambe le parti.</p>
+        <div class="service-tag">→ Aziende · PMI</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <h3>Recupero Giudiziale</h3>
+        <p>Avvio e gestione delle procedure legali per il recupero coattivo del credito, in collaborazione con professionisti legali qualificati e in conformità alle norme processuali.</p>
+        <div class="service-tag">→ Aziende · Studi legali</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <h3>Gestione Pratiche Insoluti</h3>
+        <p>Presa in carico del portafoglio crediti, reportistica periodica e gestione integrata delle posizioni aperte, con aggiornamenti puntuali sullo stato di avanzamento.</p>
+        <div class="service-tag">→ PMI · Banche</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <h3>Consulenza Debitoria</h3>
+        <p>Supporto nella valutazione della recuperabilità del credito, nella gestione preventiva del rischio e nell'impostazione di procedure interne di credit management.</p>
+        <div class="service-tag">→ Professionisti · Aziende</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- METODO -->
+<section id="metodo">
+  <div class="section-kicker">Il Metodo</div>
+  <h2 class="section-title">Come lavoriamo</h2>
+  <p class="section-sub">Un processo strutturato, trasparente e orientato al risultato. Senza sorprese.</p>
+  <div class="metodo-grid">
+    <div class="metodo-step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Analisi preliminare gratuita</h3>
+        <p>Valutiamo le caratteristiche del credito, la situazione del debitore e le prospettive di recupero. Solo allora proponiamo un piano d'azione personalizzato.</p>
+      </div>
+    </div>
+    <div class="metodo-step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Strategia su misura</h3>
+        <p>In base all'analisi, definiamo insieme la via più efficace: stragiudiziale, giudiziale o un approccio ibrido, sempre nel rispetto dei limiti normativi.</p>
+      </div>
+    </div>
+    <div class="metodo-step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Attività e monitoraggio</h3>
+        <p>Gestiamo ogni fase operativa e ti teniamo costantemente aggiornato sull'evoluzione della pratica, con report chiari e accessibili.</p>
+      </div>
+    </div>
+    <div class="metodo-step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Chiusura e rendicontazione</h3>
+        <p>Al termine della pratica forniremo un resoconto dettagliato delle azioni compiute, degli importi recuperati e dei costi sostenuti.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERCHÉ NOI -->
+<div class="perche-outer">
+  <section>
+    <div class="section-kicker" style="color:var(--gold-light);">Perché sceglierci</div>
+    <h2 class="section-title">Competenza, copertura, correttezza</h2>
+    <div class="perche-grid">
+      <div class="perche-item">
+        <h3>Copertura nazionale</h3>
+        <p>Operiamo su tutto il territorio italiano, con una rete di collaboratori locali nelle principali piazze.</p>
+      </div>
+      <div class="perche-item">
+        <h3>Approccio integrato</h3>
+        <p>Dalla fase stragiudiziale a quella legale, gestiamo l'intera filiera senza che tu debba coinvolgere più interlocutori.</p>
+      </div>
+      <div class="perche-item">
+        <h3>Conformità normativa</h3>
+        <p>Ogni nostra attività rispetta il Codice del Consumo, il GDPR e le disposizioni del Codice Civile in materia di obbligazioni.</p>
+      </div>
+      <div class="perche-item">
+        <h3>Fee sul recuperato</h3>
+        <p>Il nostro compenso è strutturato prevalentemente sul successo: allineamo i nostri interessi ai tuoi fin dall'inizio.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DEONTOLOGIA -->
+<section id="deontologia">
+  <div class="section-kicker">Etica e Deontologia</div>
+  <h2 class="section-title" style="margin-bottom:32px;">Il nostro impegno deontologico</h2>
+  <div class="deontologia-box">
+    <div>
+      <div class="deontologia-title">Operiamo sempre <span>nel pieno rispetto delle regole</span> e della persona.</div>
+    </div>
+    <ul class="deontologia-list">
+      <li><span class="check">✓</span> Rispettiamo la dignità e la riservatezza del debitore in ogni fase dell'attività.</li>
+      <li><span class="check">✓</span> Non utilizziamo pratiche intimidatorie, ingannevoli o contrarie alle norme del Codice del Consumo (D.Lgs. 206/2005).</li>
+      <li><span class="check">✓</span> Trattiamo i dati personali in conformità al GDPR (Reg. UE 2016/679) e al D.Lgs. 196/2003.</li>
+      <li><span class="check">✓</span> Garantiamo trasparenza sulle nostre modalità operative e sui costi dal primo contatto.</li>
+      <li><span class="check">✓</span> Rispettiamo i tempi di prescrizione e gli eventuali accordi di rateizzazione già in essere.</li>
+      <li><span class="check">✓</span> Non effettuiamo contatti reiterati o in orari non appropriati che possano configurare molestia.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA FINALE -->
+<div class="cta-outer" id="contatti">
+  <section>
+    <div class="section-kicker" style="color:var(--gold-light);">Contatti</div>
+    <h2 class="section-title">Parla con un nostro consulente</h2>
+    <p class="section-sub">Prima consulenza gratuita e senza impegno. Descrivici la situazione e ti risponderemo entro 24 ore lavorative.</p>
+    <form class="cta-form" onsubmit="return false;">
+      <input type="text" placeholder="Nome e cognome *" required>
+      <input type="text" placeholder="Azienda / Studio *">
+      <input type="email" placeholder="Email *" required>
+      <input type="tel" placeholder="Telefono">
+      <select class="full">
+        <option value="" disabled selected>Tipo di servizio richiesto</option>
+        <option>Recupero stragiudiziale</option>
+        <option>Recupero giudiziale</option>
+        <option>Gestione pratiche insoluti</option>
+        <option>Consulenza debitoria</option>
+        <option>Non so ancora, vorrei un'analisi</option>
+      </select>
+      <textarea class="full" placeholder="Descrivi brevemente la situazione (importo indicativo, anzianità del credito, eventuali tentativi già effettuati)..."></textarea>
+      <div class="full" style="display:flex; align-items:flex-start; gap:10px;">
+        <input type="checkbox" id="privacy" style="margin-top:3px; width:auto; flex-shrink:0;">
+        <label for="privacy" class="privacy-note">Ho letto e accetto la <a href="#" style="color:var(--gold-light);">Privacy Policy</a>. I dati forniti saranno trattati in conformità al GDPR per la gestione della richiesta di contatto.</label>
+      </div>
+      <div class="full">
+        <button class="btn-primary" style="width:100%; padding:15px; font-size:15px;">Invia la richiesta di consulenza gratuita</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Recupero Crediti <span>Italia</span></div>
+  <p class="footer-copy">© 2025 Recupero Crediti Italia — P.IVA 00000000000 · Sede legale: via [da completare] · info@recuperocreditiitalia.it</p>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Cookie Policy</a>
+    <a href="#">Note legali</a>
+  </div>
+</footer>
+
+</body>
+</html>
